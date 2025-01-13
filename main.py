@@ -30,14 +30,11 @@ oakland_weather = get_weather_forcast(constants.oakland_latitude, constants.oakl
 el_cerrito_weather = get_weather_forcast(constants.el_cerrito_latitude, constants.el_cerrito_longitude)
 berkeley_weather = get_weather_forcast(constants.berkeley_latitude, constants.berkeley_longitude)
 
-# Print the weather forcast for the cities
-print(hayward_weather.json())
-
 # Parse the JSON string into a Python dictionary
 data = json.loads(hayward_weather.text)
 
 # Format the JSON data with indentation
-formatted_json = json.dumps(data, indent=4)
+formatted_json = json.dumps(data['properties'], indent=4)
 
 # Print the formatted 
 print(formatted_json)
