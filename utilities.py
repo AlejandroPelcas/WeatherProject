@@ -22,3 +22,9 @@ def get_all_forcasts(Cities: List[City]):
     for city in Cities:
         forcasts[city.get_name()] = get_weather_forcast(city.get_latitude(), city.get_longitude())
     return forcasts
+
+def load_to_csv(data):  
+    """Load the weather forcast data to a CSV file
+    Args:
+        data: """
+    

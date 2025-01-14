@@ -6,8 +6,12 @@ import numpy as np
 from City import City
 from utilities import *
 from constants import *
+from pyspark.sql import SparkSession
 
 TEMPERATURE_UNITS = "Fahrenheit"
+
+# Spark session
+# spark = SparkSession.builder.appName("WeatherForcast").getOrCreate()
 
 # Get the weather forcast for the cities
 weather_forcasts = get_all_forcasts(CITIES)
