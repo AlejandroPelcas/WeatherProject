@@ -20,5 +20,5 @@ def get_all_forcasts(Cities: List[City]):
         Returns: Dictionary of city and their weather forcasts"""
     forcasts = {}
     for city in Cities:
-        forcasts[city] = get_weather_forcast(city.get_latitude(), city.get_longitude())
+        forcasts[city.get_name()] = get_weather_forcast(city.get_latitude(), city.get_longitude())
     return forcasts
