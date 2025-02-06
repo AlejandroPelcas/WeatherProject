@@ -5,6 +5,49 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 
+# Apache airflow
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+from datetime import datetime, timedelta
+
+def main():
+    # Create the database and table if they don't exist
+    create_database()
+
+    # Fetch weather data
+    weather_data = fetch_weather_data()
+    if weather_data:
+        # Store weather data in the database
+        store_weather_data(weather_data)
+        print("Successfully created and stored weather data")
+
+if __name__ == "__main__":
+    main()
+
+# Define the default arguments for the DAG
+default_args = {
+    'owner': 'airflow',
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
+    'start_date': datetime(2025, 2, 6),  # Set the start date of the DAG
+}
+
+# Define the DAG
+dag = DAG(
+    'my_first_dag',  # Name of the DAG
+    default_args=default_args,
+    description='My first Airflow DAG',
+    schedule_interval='@daily',  # Specify the scheduling interval (more on this below)
+    catchup=False,  # Avoid running missed executions (if the DAG is not run for a while)
+)
+
+# Create a task in the DAG
+task = PythonOperator(
+    task_id='my_task',  # Name of the task
+    python_callable=main,  # Function to call
+    dag=dag,  # The DAG this task belongs to
+)
+
 # Loads the variables in .env file
 load_dotenv()
 
@@ -72,17 +115,3 @@ def store_weather_data(weather_data):
     conn.commit()
     conn.close()
     print("Weather data stored successfully!")
-
-def main():
-    # Create the database and table if they don't exist
-    create_database()
-
-    # Fetch weather data
-    weather_data = fetch_weather_data()
-    if weather_data:
-        # Store weather data in the database
-        store_weather_data(weather_data)
-        print("Successfully created and stored weather data")
-
-if __name__ == "__main__":
-    main()
