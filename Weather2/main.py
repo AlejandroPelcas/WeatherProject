@@ -34,7 +34,7 @@ def create_database():
     connection.commit()
     connection.close()
 
-def fetch_weather_data():
+def fetch_weather_data() -> None:
     """ Fetch the current weather data from OpenWeatherApi"""
     params =  {
         "q": CITY,
@@ -52,6 +52,20 @@ def fetch_weather_data():
             "weather_description": data["weather"][0]["description"],
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
+    else:
+        print(f"Error fetching weather data: {response.status_code}")
+        return None
+
+#TODO: Rename this to 'fetch_weather_data' and change other method's name
+def fetch_weather():
+    params =  {
+        "q": CITY,
+        "appid": API_KEY,
+        "units": "imperial"  # Use "metric" for Celsius
+    }
+    response = requests.get(BASE_URL, params=params) # Gives back a resposne Object: Need to turn to json
+    if response.status_code == 200:
+        return response
     else:
         print(f"Error fetching weather data: {response.status_code}")
         return None
