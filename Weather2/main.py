@@ -34,7 +34,7 @@ def create_database():
     connection.commit()
     connection.close()
 
-def fetch_weather_data() -> None:
+def fetch_weather_data():
     """ Fetch the current weather data from OpenWeatherApi"""
     params =  {
         "q": CITY,
@@ -61,13 +61,20 @@ def fetch_weather():
     params =  {
         "q": CITY,
         "appid": API_KEY,
-        "units": "imperial"  # Use "metric" for Celsius
+        "units": "metric"  # Use "metric" for Celsius
     }
     response = requests.get(BASE_URL, params=params) # Gives back a resposne Object: Need to turn to json
     if response.status_code == 200:
-        return response
+        data = response.json()
+        return {
+            "city": data["name"],
+            "temperature": data["main"]["temp"],
+            "humidity": data["main"]["humidity"],
+            "weather_description": data["weather"][0]["description"],
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
     else:
-        print(f"Error fetching weather data: {response.status_code}")
+        print(f"MAIN.PY Error fetching weather data: {response.status_code}")
         return None
 
 def store_weather_data(weather_data):
@@ -93,7 +100,7 @@ def main():
     create_database()
 
     # Fetch weather data
-    weather_data = fetch_weather_data()
+    weather_data = fetch_weather()
     if weather_data:
         # Store weather data in the database
         store_weather_data(weather_data)
