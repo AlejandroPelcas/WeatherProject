@@ -2,7 +2,8 @@ from flask import Flask, render_template
 from main import fetch_weather
 from flask_cors import CORS
 
-app = Flask(__name__, static_folder='/Users/alejandropelcastre/Alejandros_projects/WeatherProject/WeatherProject/Weather2/js')
+# static_folder helps find the location of static folders such as js
+app = Flask(__name__, static_folder='/Users/alejandropelcastre/Alejandros_projects/WeatherProject/WeatherProject/Weather2/static/')
 CORS(app)  # This allows all origins
 
 @app.route('/')
