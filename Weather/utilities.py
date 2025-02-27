@@ -1,6 +1,6 @@
 import requests
 from typing import List
-from City import City
+from Weather.City import City
 
 def get_weather_forcast(latitude, longitude):
     """Get the weather forcast of a city for a given latitude and longitude
