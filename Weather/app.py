@@ -1,5 +1,5 @@
-from flask import Flask, render_template
-from main import fetch_weather
+from flask import Flask, render_template, jsonify
+from main import fetch_weather, fetch_recommendation
 from flask_cors import CORS
 
 # static_folder helps find the location of static folders such as js
@@ -16,8 +16,12 @@ def weather():
     print('GOT THE WEATHER DATA', data)
     return data
 
-print("Still working")
-data = weather()
+@app.route('/recommendation', methods=['GET'])
+def recommendation():
+    # Extract the assistant's response
+    assistant_message = fetch_recommendation().choices[0].message.content
+    # Return the assistant's response as JSON
+    return jsonify({"response": assistant_message})
 
 
 if __name__ == '__main__':

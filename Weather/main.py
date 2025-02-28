@@ -5,9 +5,30 @@ import os
 from dotenv import load_dotenv
 from datetime import datetime
 
+from openai import OpenAI
 
 # Loads the variables in .env file
 load_dotenv()
+
+
+client = OpenAI()
+OpenAI.api_key = os.getenv("OPENAI_API_KEY")
+
+def fetch_recommendation():
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": "Tell me about the weather in berkeley right now."
+            }
+        ]
+    )
+     #type of data is that of chatCompletion
+    return completion
+
+
 
 # SQLite database configuration
 DATABASE_NAME = "weather_data.db"
@@ -76,6 +97,7 @@ def fetch_weather():
     else:
         print(f"MAIN.PY Error fetching weather data: {response.status_code}")
         return None
+    
 
 def store_weather_data(weather_data):
     """Store weather data in the SQLite database."""

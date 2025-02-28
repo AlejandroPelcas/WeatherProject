@@ -8,9 +8,27 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000); // Simulate data load with a delay of 1 second
 });
 
+function fetchRecommendation() {
+    console.log("You pushed the right button")
+    console.debug("TRYING TO FETCH RECS")
+    alert("Inside the fetch")
+    fetch('http://127.0.0.1:5000/recommendation')
+        .then(response => response.json())
+        .then(data => {
+            alert("Did it work?")
+            console.log('Assistant response:', data["response"]);
+            alert(data["response"])
+        })
+        .catch(error => {
+            console.error('NOOOO fetching REC data:', error);
+            alert("Failed to REC  data. Please try again later.");
+        });
+}
+
 
 // Function to fetch weather data from Flask backend
 function fetchWeatherData() {
+    console.log("You pushed the left button")
     console.debug("Trying to fetch weather")
 
     fetch('http://127.0.0.1:5000/weather')  // URL of your Flask API endpoint
@@ -37,5 +55,8 @@ function fetchWeatherData() {
 // Add event listener to the update button
 document.getElementById('updateButton').addEventListener('click', fetchWeatherData);
 
+// THIS IS THE CORRECT FILE DON'T DELETE 
+// Add event listener to update LLM callback for req
+document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation);
 // Fetch data when the page loads (optional)
 // document.addEventListener("DOMContentLoaded", fetchWeatherData);

@@ -1,4 +1,4 @@
-from City import City
+from Weather.City import City
 # List of cities and their latitude and longitude coordinates 
 hayward_latitude = 37.668821
 hayward_longitude = -122.080796
