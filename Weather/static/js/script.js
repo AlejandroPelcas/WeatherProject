@@ -8,10 +8,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000); // Simulate data load with a delay of 1 second
 });
 
-function fetchRecommendation() {
-    console.log("You pushed the right button")
-    console.debug("TRYING TO FETCH RECS")
-    alert("Inside the fetch")
+async function fetchRecommendation2() {
+    const weather_data = (await fetch('http://127.0.0.1:5000/weather'));
+    const recommendation_response = await fetch('http://127.0.0.1:5000/recommendation');
+    // alert(weather_data)
+    console.log(weather_data.json().city)
     fetch('http://127.0.0.1:5000/recommendation')
         .then(response => response.json())
         .then(data => {
@@ -20,8 +21,7 @@ function fetchRecommendation() {
             alert(data["response"])
         })
         .catch(error => {
-            console.error('NOOOO fetching REC data:', error);
-            alert("Failed to REC  data. Please try again later.");
+            console.error(' error fetching REC data:', error);
         });
 }
 
@@ -57,6 +57,6 @@ document.getElementById('updateButton').addEventListener('click', fetchWeatherDa
 
 // THIS IS THE CORRECT FILE DON'T DELETE 
 // Add event listener to update LLM callback for req
-document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation);
+document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation2);
 // Fetch data when the page loads (optional)
 // document.addEventListener("DOMContentLoaded", fetchWeatherData);
