@@ -1,0 +1,55 @@
+import sqlite3
+
+# Specify name of database to store data
+# For this example make a game table
+DATABASE_NAME = 'game.db'
+
+def create_db():
+    # Create connection object to db
+    conn = sqlite3.connect(DATABASE_NAME)
+    # Create cursor object from connection
+    cursor = conn.cursor()
+    # Create table in db if it doesn't exist
+    # the .execute() method takes in standard SQL commands
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS important_data (
+            ID INTEGER NOT NULL,
+            Name VARCHAR(30),
+            Creation_data VARCHAR(40)
+            )
+        """
+    )
+    # In SQlite the commit() method saves all execute command changes during current session
+    # like update, inserts, deletes, etc. Without it the changes will dissapear when
+    # connections close
+    conn.commit()
+    conn.close()
+
+def insert_entry():
+    conn = sqlite3.connect(DATABASE_NAME)
+    curs = conn.cursor()
+    curs.execute("""
+        INSERT INTO important_data (ID, Name, Creation_data) VALUES
+                 (2, "Valorant", "Too_soon")
+                 """
+    )
+    conn.commit()
+    conn.close()
+
+def peek_data():
+    conn = sqlite3.connect(DATABASE_NAME)
+    curs = conn.cursor()
+    curs.execute("SELECT * FROM important_data")
+    rows = curs.fetchall()
+    for row in rows:
+        print(row)
+
+
+def main():
+    create_db()
+    insert_entry()
+    peek_data()
+    
+
+if __name__ == "__main__":
+    main()
