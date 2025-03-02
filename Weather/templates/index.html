@@ -15,6 +15,42 @@
     <main>
         <div class="dashboard">
             <h2>Weather</h2>
+            <div class="graph">
+                <canvas id="myChart"></canvas>
+                    <!-- add the graph for analytics-->
+            </div>
+            <script>
+                fetch('http://127.0.0.1:5000/data')
+                    .then(response => response.json())
+                    .then(data => {
+                        const labels = data.map(item => item.label);
+                        const values = data.map(item => item.value);
+                        console.log(labels)
+                        console.log(values)            
+                        const ctx = document.getElementById('myChart').getContext('2d');
+                        const myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Data from SQLite',
+                                    data: values,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            </script>
             <div class="metrics">
                 <div class="metric" id="temperature">
                     <p>Temperature: --</p>
