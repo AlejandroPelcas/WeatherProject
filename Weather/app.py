@@ -22,6 +22,7 @@ def recommendation():
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 
+# This is just to get the data. Planned to use as part of CSS container to show data in a graph
 @app.route('/data', methods=['GET'])
 def data():
     data = fetch_weather()
