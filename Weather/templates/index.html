@@ -21,9 +21,13 @@
             </div>
             <div id="textContainer" style="padding: 20px; border: 1px solid #ccc; margin-top: 20px;"></div>
             <script>
-            fetch('http://127.0.0.1:5000/recommendation')
-            .then(response => response.json())  // Parse the response body as JSON
+            fetch('http://127.0.0.1:5000/weather')
+            .then(response => response.json())
             .then(data => {
+                console.log(data)
+                fetch(`http://127.0.0.1:5000/recommendation/${data}`)
+                .then(response => response.json())
+                .then(data => {
                 // Get the text from the API response
                 alert("Do?")
                 const text = data;
@@ -31,6 +35,7 @@
                 // Get the div container by ID and populate it with the text
                 const textContainer = document.getElementById('textContainer');
                 textContainer.innerText = text;  // Insert the text into the div
+                })
             })
             .catch(error => {
                 console.error('Error fetching the text:', error);

@@ -15,13 +15,31 @@ client = OpenAI()
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 def fetch_recommendation():
+    # if data == None:
+    #     print("Data field empty")
+    #     completion = client.chat.completions.create(
+    #     model="gpt-4o-mini",
+    #     messages=[
+    #         {"role": "system", "content": "You are a helpful assistant."},
+    #         {
+    #             "role": "user",
+    #             "content": "What is ${temp} celsius in farenheit?. What should I wear?"
+    #         }
+    #     ]
+    #     )
+    #     #type of data is that of chatCompletion
+    #     return completion
+    
+    #If data was passed in use it 
+    print("Data was passed in fetch rec")
+    # temp = data['temperature']
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": "Tell me about the weather in berkeley right now."
+                "content": "What is  celsius in farenheit?. What should I wear?"
             }
         ]
     )
@@ -117,9 +135,22 @@ def store_weather_data(weather_data):
     conn.close()
     print("Weather data stored successfully!")
 
+def create_user_database():
+    conn = sqlite3.connect('User.db')
+    cur  = conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS Users (
+                id INTEGER NOT NULL,
+                username varchar(20) NOT NULL UNIQUE,
+                password varchar(20) NOT NULL
+                )""")
+    print("Successfully created user-base db")
+    conn.commit()
+    conn.close()
+
 def main():
     # Create the database and table if they don't exist
     create_database()
+    create_user_database()
 
     # Fetch weather data
     weather_data = fetch_weather()

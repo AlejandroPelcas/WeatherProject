@@ -22,6 +22,14 @@ def recommendation():
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 
+@app.route('/recommendation/<data>', methods=['GET'])
+def recommendation_data(data):
+    # Extract the assistant's response
+    #TODO: Curretnly data is a string object. Need to fix that before passign to fetch_rec
+    assistant_message = fetch_recommendation().choices[0].message.content
+    # Return the assistant's response as JSON
+    return jsonify({"response": assistant_message})
+
 # This is just to get the data. Planned to use as part of CSS container to show data in a graph
 @app.route('/data', methods=['GET'])
 def data():
