@@ -1,18 +1,38 @@
 import sqlite3
 import requests
 import os
-
 from dotenv import load_dotenv
 from datetime import datetime
-
 from openai import OpenAI
 
 # Loads the variables in .env file
 load_dotenv()
 
-
+# Connect to OpenAI api
 client = OpenAI()
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
+
+# SQLite database configuration
+DATABASE_NAME = "weather_data.db"
+
+# OpenWeatherMap API configuration
+API_KEY = os.getenv("API_KEY")
+CITY = "Berkeley"
+BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
+
+def fetch_recommendation_data(temp):
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {
+                "role": "user",
+                "content": f"The current temperatures is {temp}. What should I wear?"
+            }
+        ]
+    )
+     #type of data is that of chatCompletion
+    return completion
 
 def fetch_recommendation():
     # if data == None:
@@ -45,16 +65,6 @@ def fetch_recommendation():
     )
      #type of data is that of chatCompletion
     return completion
-
-
-
-# SQLite database configuration
-DATABASE_NAME = "weather_data.db"
-
-# OpenWeatherMap API configuration
-API_KEY = os.getenv("API_KEY")
-CITY = "Berkeley"
-BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
 def create_database():
     """ Creates SQLite database to store weather data """
@@ -151,7 +161,6 @@ def main():
     # Create the database and table if they don't exist
     create_database()
     create_user_database()
-
     # Fetch weather data
     weather_data = fetch_weather()
     if weather_data:

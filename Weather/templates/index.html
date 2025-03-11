@@ -25,7 +25,10 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                fetch(`http://127.0.0.1:5000/recommendation/${data}`)
+                const temp = data.temperature
+                const city = data.city
+                console.log(temp)
+                fetch(`http://127.0.0.1:5000/recommendation/${temp}`)
                 .then(response => response.json())
                 .then(data => {
                 // Get the text from the API response

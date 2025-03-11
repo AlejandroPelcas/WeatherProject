@@ -1,16 +1,25 @@
-from flask import Flask, render_template, jsonify
-from main import fetch_weather, fetch_recommendation
+from flask import Flask, render_template, url_for, jsonify, redirect
+from main import fetch_weather, fetch_recommendation, fetch_recommendation_data
 from flask_cors import CORS
 from flask_wtf import FlaskForm
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
+from flask_bcrypt import Bcrypt #hasing algo for hashing passwords
+import sqlite3
 
-# static_folder helps find the location of static folders such as js
-app = Flask(__name__, static_folder='static')
+DATABASE_NAME = 'User.db'
+
+app = Flask(__name__, static_folder='static') # static_folder helps find the location of static folders such as js
 CORS(app)  # This allows all origins
-
 app.secret_key = 'my_secret_key'
+bcyrpt = Bcrypt(app) #allows app to use Bcrypt features
 
+#Login Manager releated code
+login_manager = LoginManager()
+login_manager.init_app(app) # Connects manager with app
+login_manager.login_view = "login"
+@login_manager.user_loader # reload from user_id store and load
 
 class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(
@@ -47,9 +56,17 @@ def login():
 @app.route('/register', methods=['GET','POST'])
 def register():
     form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = bcyrpt.generate_password_hash(form.password.data)
+        # conn = sqlite3.connect(DATABASE_NAME)
+        # curs = conn.cursor()
+        # curs.execute("")
+
+        # conn.commit()
+        # conn.close()
+        return redirect(url_for('login'))
+    
     return render_template('register.html', form=form)
-
-
 
 @app.route('/')
 def home():
@@ -68,11 +85,11 @@ def recommendation():
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 
-@app.route('/recommendation/<data>', methods=['GET'])
-def recommendation_data(data):
+@app.route('/recommendation/<temp>', methods=['GET'])
+def recommendation_data(temp):
     # Extract the assistant's response
     #TODO: Curretnly data is a string object. Need to fix that before passign to fetch_rec
-    assistant_message = fetch_recommendation().choices[0].message.content
+    assistant_message = fetch_recommendation_data(temp).choices[0].message.content
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 
