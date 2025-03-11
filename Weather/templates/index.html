@@ -28,7 +28,7 @@
                 const temp = data.temperature
                 const city = data.city
                 console.log(temp)
-                fetch(`http://127.0.0.1:5000/recommendation/${temp}`)
+                fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}`)
                 .then(response => response.json())
                 .then(data => {
                 // Get the text from the API response
@@ -62,6 +62,7 @@
         <!-- Add an update weather button -->
          <button id="updateButton"> Update Weather </button>
          <button id="updateRecommendationButton"> Get Recommendation </button>
+         <button id="weatherDataInfo"> Weather data info </button>
     </main>
     <!-- <script src="js/script.js"></script> This file path no longer works. New one below-->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

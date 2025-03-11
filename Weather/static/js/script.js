@@ -8,6 +8,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }, 1000); // Simulate data load with a delay of 1 second
 });
 
+async function showWeatherData() {
+    fetch('http://127.0.0.1:5000/info')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+        })
+    
+}
+
 async function fetchRecommendation2() {
     const weather_data = (await fetch('http://127.0.0.1:5000/weather'));
     const recommendation_response = await fetch('http://127.0.0.1:5000/recommendation');
@@ -60,3 +69,4 @@ document.getElementById('updateButton').addEventListener('click', fetchWeatherDa
 document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation2);
 // Fetch data when the page loads (optional)
 // document.addEventListener("DOMContentLoaded", fetchWeatherData);
+document.getElementById('weatherDataInfo').addEventListener('click', showWeatherData)

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <p> Register Form page </p>
+    <form method="POST" action="">
+     <!-- used by flask-wtf to generate and render
+        a hidden field for CSRF token (Cross-Site Request Forgery token) in HTML forms-->
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password  }}
+        {{ form.submit }}
+    </form>
+    <a href="login">already have an account? Login here </a>
+</head>
+<body>
+    
+</body>
+</html>

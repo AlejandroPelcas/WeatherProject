@@ -104,6 +104,21 @@ def fetch_weather_data():
     else:
         print(f"Error fetching weather data: {response.status_code}")
         return None
+    
+def fetch_info():
+    params =  {
+        "q": CITY,
+        "appid": API_KEY,
+        "units": "metric"  # Use "imperial" for Fahrenheit
+    }
+    response = requests.get(BASE_URL, params=params) # Gives back a resposne Object: Need to turn to json
+    if response.status_code == 200:
+        print("API Response Successful")
+        data = response.json()
+        return data
+    else:
+        print(f"Error fetching weather data: {response.status_code}")
+        return None
 
 #TODO: Rename this to 'fetch_weather_data' and change other method's name
 def fetch_weather():

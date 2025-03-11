@@ -1,5 +1,5 @@
-from flask import Flask, render_template, url_for, jsonify, redirect
-from main import fetch_weather, fetch_recommendation, fetch_recommendation_data
+from flask import Flask, request, render_template, url_for, jsonify, redirect
+from main import fetch_weather, fetch_recommendation, fetch_recommendation_data, fetch_info
 from flask_cors import CORS
 from flask_wtf import FlaskForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
@@ -78,6 +78,10 @@ def weather():
     print('GOT THE WEATHER DATA', data)
     return data
 
+@app.route('/info', methods=['GET'])
+def info():
+    data = fetch_info()
+
 @app.route('/recommendation', methods=['GET'])
 def recommendation():
     # Extract the assistant's response
@@ -85,8 +89,9 @@ def recommendation():
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 
-@app.route('/recommendation/<temp>', methods=['GET'])
-def recommendation_data(temp):
+@app.route('/recommendation_data/', methods=['GET'])
+def recommendation_data():
+    temp = request.args.get("temperature")
     # Extract the assistant's response
     #TODO: Curretnly data is a string object. Need to fix that before passign to fetch_rec
     assistant_message = fetch_recommendation_data(temp).choices[0].message.content
