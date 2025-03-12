@@ -20,14 +20,17 @@ API_KEY = os.getenv("API_KEY")
 CITY = "Berkeley"
 BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
 
-def fetch_recommendation_data(temp):
+def fetch_recommendation_data(temp, humidity, city):
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
             {
                 "role": "user",
-                "content": f"The current temperatures is {temp}. What should I wear?"
+                "content": f"""The current temperatures and humidity are {temp} degrees and {humidity}%s.
+                I currently live in {city}. What's the most appropriate thing to wear? 
+                Respond in the following way: The current temperatue is {temp} with humidity percentage {humidity}.
+                You are also in {city}. The best clothes to wear are: And list the clothes"""
             }
         ]
     )

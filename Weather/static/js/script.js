@@ -61,12 +61,54 @@ function fetchWeatherData() {
         alert("success")
 }
 
+function updateTextBox() {
+    const responseBox = document.getElementById('responseBox');
+    console.log("Update Text Box")
+    if (storedData) {
+        responseBox.value = storedData
+        console.log("There was an API response")
+    } else {
+        responseBox.value = "No Text Val yet"
+        console.log("No text yet")
+    }
+}
+
+document.getElementById('UpdateTextBox').addEventListener('click', updateTextBox);
+
 // Add event listener to the update button
 document.getElementById('updateButton').addEventListener('click', fetchWeatherData);
 
-// THIS IS THE CORRECT FILE DON'T DELETE 
 // Add event listener to update LLM callback for req
 document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation2);
+
 // Fetch data when the page loads (optional)
 // document.addEventListener("DOMContentLoaded", fetchWeatherData);
 document.getElementById('weatherDataInfo').addEventListener('click', showWeatherData)
+
+// When page is loaded fetch the data
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Page is Loaded")
+    // Fetch the data 
+    fetch('http://127.0.0.1:5000/weather')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        const temp = data.temperature
+        const city = data.city
+        const humidity = data.humidity
+        fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
+        .then(response => response.json())
+        .then(data => {
+        // Get the text from the API response
+        const text = data;
+        console.log("This is the data response text" ,data.response)
+        // Get the div container by ID and populate it with the text
+        const textContainer = document.getElementById('textContainer');
+        textContainer.innerText = text;  // Insert the text into the div
+        storedData = data.response
+        })
+    })
+    .catch(error => {
+        console.error('Error fetching the text:', error);
+    });
+})

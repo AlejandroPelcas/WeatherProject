@@ -75,7 +75,6 @@ def home():
 @app.route("/weather", methods=["GET"])
 def weather():
     data = fetch_weather()
-    print('GOT THE WEATHER DATA', data)
     return data
 
 @app.route('/info', methods=['GET'])
@@ -92,9 +91,11 @@ def recommendation():
 @app.route('/recommendation_data/', methods=['GET'])
 def recommendation_data():
     temp = request.args.get("temperature")
+    humidity = request.args.get("humidity")
+    city = request.args.get("city")
     # Extract the assistant's response
     #TODO: Curretnly data is a string object. Need to fix that before passign to fetch_rec
-    assistant_message = fetch_recommendation_data(temp).choices[0].message.content
+    assistant_message = fetch_recommendation_data(temp,humidity,city).choices[0].message.content
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 

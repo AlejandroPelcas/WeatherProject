@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <!-- <link rel="stylesheet" href="../css/style.css"> -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
@@ -20,30 +21,8 @@
                     <!-- add the graph for analytics-->
             </div>
             <div id="textContainer" style="padding: 20px; border: 1px solid #ccc; margin-top: 20px;"></div>
-            <script>
-            fetch('http://127.0.0.1:5000/weather')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                const temp = data.temperature
-                const city = data.city
-                console.log(temp)
-                fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}`)
-                .then(response => response.json())
-                .then(data => {
-                // Get the text from the API response
-                alert("Do?")
-                const text = data;
-                console.log("This is the data response text" ,data.response)
-                // Get the div container by ID and populate it with the text
-                const textContainer = document.getElementById('textContainer');
-                textContainer.innerText = text;  // Insert the text into the div
-                })
-            })
-            .catch(error => {
-                console.error('Error fetching the text:', error);
-            });
-            </script>
+            <input type="text" id="responseBox" readonly/>
+
             <div class="metrics">
                 <div class="metric" id="temperature">
                     <p>Temperature: --</p>
@@ -51,18 +30,22 @@
                 <div class="metric" id="city">
                     <p> City: --</p>
                 </div>
-                <!-- <div class="metric" id="humidity">
+                <div class="metric" id="humidity">
                     <p>Humidity: --</p>
                 </div>
+                <!--
                 <div class="metric" id="wind">
                     <p>Wind Speed: --</p>
                 </div> -->
+                <script>         var storedData = null;
+                </script>
             </div>
         </div>
         <!-- Add an update weather button -->
          <button id="updateButton"> Update Weather </button>
          <button id="updateRecommendationButton"> Get Recommendation </button>
          <button id="weatherDataInfo"> Weather data info </button>
+         <button id="UpdateTextBox"> Update Text box </button>
     </main>
     <!-- <script src="js/script.js"></script> This file path no longer works. New one below-->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
