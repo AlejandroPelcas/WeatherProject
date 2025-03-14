@@ -7,3 +7,6 @@ We use HTML/CSS/JS to create the webpage where users can interact with the weath
 
 ## Back-end
 We use a python script to gather and store OpenWeather's data through their API and run a server using Flask so that clients can update the webpage's weather data. 
+
+## Flask packages
+pip3 install flask flask_login flask_bcrypt flask_wtf wtforms email_validator
