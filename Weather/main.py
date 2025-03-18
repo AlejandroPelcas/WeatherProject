@@ -38,21 +38,7 @@ def fetch_recommendation_data(temp, humidity, city):
     return completion
 
 def fetch_recommendation():
-    # if data == None:
-    #     print("Data field empty")
-    #     completion = client.chat.completions.create(
-    #     model="gpt-4o-mini",
-    #     messages=[
-    #         {"role": "system", "content": "You are a helpful assistant."},
-    #         {
-    #             "role": "user",
-    #             "content": "What is ${temp} celsius in farenheit?. What should I wear?"
-    #         }
-    #     ]
-    #     )
-    #     #type of data is that of chatCompletion
-    #     return completion
-    
+
     #If data was passed in use it 
     print("Data was passed in fetch rec")
     # temp = data['temperature']

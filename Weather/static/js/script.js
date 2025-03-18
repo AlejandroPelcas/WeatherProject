@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Simulate data for the metrics
         document.getElementById('temperature').innerHTML = "<p>Temperature: ?°C</p>";
         document.getElementById('humidity').innerHTML = "<p>Humidity: ?%</p>";
-        document.getElementById('wind').innerHTML = "<p>Wind Speed: ? km/h</p>";
+        document.getElementById('city').innerHTML = "<p>City: ?</p>";
     }, 100); // Simulate data load with a delay of 1 second
 });
 
@@ -37,7 +37,9 @@ if (navigator.geolocation) {
             const text = data;
             console.log("This is the data response text" ,data.response)
             // Get the div container by ID and populate it with the text
-    
+            document.getElementById('temperature').innerHTML =  `<p>Temperature: ${temp}°FS</p>`;
+            document.getElementById('humidity').innerHTML = `<p> Humidity: ${humidity}%`;
+            document.getElementById('city').innerHTML = `<p> City: ${city}</p>`;
             storedData = data.response
             })
         })
