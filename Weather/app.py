@@ -99,9 +99,10 @@ def recommendation_data():
     temp = request.args.get("temperature")
     humidity = request.args.get("humidity")
     city = request.args.get("city")
+    weather_description = request.args.get('weather_description')
     # Extract the assistant's response
     #TODO: Curretnly data is a string object. Need to fix that before passign to fetch_rec
-    assistant_message = fetch_recommendation_data(temp,humidity,city).choices[0].message.content
+    assistant_message = fetch_recommendation_data(temp,humidity,city,weather_description).choices[0].message.content
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
 

@@ -28,9 +28,10 @@ if (navigator.geolocation) {
             console.log("The data inside lat lon fetch", data)
             const temp = data.temperature
             const city = data.city
+            const weather_description = data.weather_description
             console.log("City = ", city)
             const humidity = data.humidity
-            fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
+            fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}&weather_description=${weather_description}`)
             .then(response => response.json())
             .then(data => {
             // Get the text from the API response
