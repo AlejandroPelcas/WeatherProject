@@ -2,11 +2,36 @@
 document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
         // Simulate data for the metrics
-        document.getElementById('temperature').innerHTML = "<p>Temperature: 22°C</p>";
-        document.getElementById('humidity').innerHTML = "<p>Humidity: 58%</p>";
-        document.getElementById('wind').innerHTML = "<p>Wind Speed: 14 km/h</p>";
-    }, 1000); // Simulate data load with a delay of 1 second
+        document.getElementById('temperature').innerHTML = "<p>Temperature: ?°C</p>";
+        document.getElementById('humidity').innerHTML = "<p>Humidity: ?%</p>";
+        document.getElementById('wind').innerHTML = "<p>Wind Speed: ? km/h</p>";
+    }, 100); // Simulate data load with a delay of 1 second
 });
+
+function onLoad() {
+    console.log("Page is Loaded")
+    fetch('http://127.0.0.1:5000/weather')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        const temp = data.temperature
+        const city = data.city
+        const humidity = data.humidity
+        fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
+        .then(response => response.json())
+        .then(data => {
+        // Get the text from the API response
+        const text = data;
+        console.log("This is the data response text" ,data.response)
+        // Get the div container by ID and populate it with the text
+
+        storedData = data.response
+        })
+    })
+    .catch(error => {
+        console.error('Error fetching the text:', error);
+    });
+}
 
 async function showWeatherData() {
     fetch('http://127.0.0.1:5000/info')
@@ -39,14 +64,12 @@ async function fetchRecommendation2() {
 function fetchWeatherData() {
     console.log("You pushed the left button")
     console.debug("Trying to fetch weather")
-
     fetch('http://127.0.0.1:5000/weather')  // URL of your Flask API endpoint
         .then(response => response.json())
         .then(data => {
             // Update the UI with the fetched data
             // Get all the keys
             const keys = Object.keys(data);
-
             // Print the keys
             console.debug(keys);
             document.getElementById('temperature').innerHTML = `<p>Temperature: ${data["temperature"]}°F</p>`;
@@ -54,61 +77,33 @@ function fetchWeatherData() {
 
         })
         .catch(error => {
-            console.debug("We suck")
-            console.error('NOOOO fetching weather data:', error);
             alert("Failed to fetch weather data. Please try again later.");
         });
         alert("success")
 }
 
+function autoResize() {
+    const textarea = document.getElementById('dynamic-textbox');
+    textarea.style.height = 'auto'; // Reset height to auto before calculating
+    textarea.style.height = textarea.scrollHeight + 'px'; //
+    textarea.value = storedData
+}
 function updateTextBox() {
-    const responseBox = document.getElementById('responseBox');
     console.log("Update Text Box")
     if (storedData) {
-        responseBox.value = storedData
+        setTimeout(() => {
+            autoResize();
+                  }, 1000); // Small delay to allow DOM update
+        
         console.log("There was an API response")
     } else {
-        responseBox.value = "No Text Val yet"
+        textarea.value = "Value hasn't been fetched yet. Please try again!"
         console.log("No text yet")
     }
 }
 
 document.getElementById('UpdateTextBox').addEventListener('click', updateTextBox);
-
-// Add event listener to the update button
 document.getElementById('updateButton').addEventListener('click', fetchWeatherData);
-
-// Add event listener to update LLM callback for req
 document.getElementById('updateRecommendationButton').addEventListener('click', fetchRecommendation2);
-
-// Fetch data when the page loads (optional)
-// document.addEventListener("DOMContentLoaded", fetchWeatherData);
 document.getElementById('weatherDataInfo').addEventListener('click', showWeatherData)
-
-// When page is loaded fetch the data
-document.addEventListener("DOMContentLoaded", function() {
-    console.log("Page is Loaded")
-    // Fetch the data 
-    fetch('http://127.0.0.1:5000/weather')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        const temp = data.temperature
-        const city = data.city
-        const humidity = data.humidity
-        fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
-        .then(response => response.json())
-        .then(data => {
-        // Get the text from the API response
-        const text = data;
-        console.log("This is the data response text" ,data.response)
-        // Get the div container by ID and populate it with the text
-        const textContainer = document.getElementById('textContainer');
-        textContainer.innerText = text;  // Insert the text into the div
-        storedData = data.response
-        })
-    })
-    .catch(error => {
-        console.error('Error fetching the text:', error);
-    });
-})
+document.addEventListener("DOMContentLoaded", onLoad)

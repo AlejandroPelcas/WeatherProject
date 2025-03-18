@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
-    <!-- <link rel="stylesheet" href="../css/style.css"> -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 </head>
 <body>
     <header>
+        <a href="login"> Login </a>
         <h1> weather </h1>
     </header>
     <main>
         <div class="dashboard">
-            <div id="textContainer" style="padding: 20px; border: 1px solid #ccc; margin-top: 20px;"></div>
-            <input type="text" id="responseBox" readonly/>
-
-            <div class="metrics">
+            <div class="textarea-container">
+                <textarea id="dynamic-textbox" placeholder="Want to know what to wear for the weather? Click 'update'!" disabled></textarea>
+            </div>
+                <div class="metrics">
                 <div class="metric" id="temperature">
                     <p>Temperature: --</p>
                 </div>
@@ -28,19 +28,52 @@
                 <div class="metric" id="humidity">
                     <p>Humidity: --</p>
                 </div>
-                <!--
-                <div class="metric" id="wind">
-                    <p>Wind Speed: --</p>
-                </div> -->
-                <script>         var storedData = null;
-                </script>
+                <script> var storedData = null; </script>
             </div>
         </div>
         <!-- Add an update weather button -->
-         <button id="updateButton"> Update Weather </button>
-         <button id="updateRecommendationButton"> Get Recommendation </button>
-         <button id="weatherDataInfo"> Weather data info </button>
-         <button id="UpdateTextBox"> Update Text box </button>
+         <div class="buttons"> 
+            <button id="updateButton"> Update Weather </button>
+            <button id="updateRecommendationButton"> Get Recommendation </button>
+            <button id="weatherDataInfo"> Weather data info </button>
+            <button id="UpdateTextBox"> Update Text box </button>
+         </div>
+
+           <button onclick="getLocation()">Get Coordinates</button>
+  <p id="coordinates"></p>
+
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        document.getElementById("coordinates").innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      document.getElementById("coordinates").innerHTML = `Latitude: ${latitude} <br> Longitude: ${longitude}`;
+    }
+
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          document.getElementById("coordinates").innerHTML = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          document.getElementById("coordinates").innerHTML = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          document.getElementById("coordinates").innerHTML = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          document.getElementById("coordinates").innerHTML = "An unknown error occurred.";
+          break;
+      }
+    }
+  </script>
     </main>
     <!-- <script src="js/script.js"></script> This file path no longer works. New one below-->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

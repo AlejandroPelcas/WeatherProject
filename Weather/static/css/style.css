@@ -3,12 +3,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-	background-color: #1d1160; 
+	background-color: snow; 
 }
 
 /* Header Styles */
 header {
-    background-color: #1d1160;  /* Calming Gray */
+    background-color: snow;  /* Calming Gray */
     color: grey;
     text-align: center;
     padding: 20px;
@@ -31,21 +31,45 @@ h2 {
     padding-top: 100px;
 }
 
-.graph {
-    display: flex;
-    background-color: snow;
-    width: 400px;
-    height: 400px;
+button {
+    padding: auto;
+    padding-left: 5%;
 }
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
 
 /* Dashboard Styles */
 .dashboard {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    background-color: #1d1160;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px; /* Padding inside the parent div */
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.5); /* Shadow properties */
+
 }
+
+
+
+textarea {
+    width: 100%;
+    min-height: 50px;
+    max-width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    border: 1px solid white;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none; /* Disable manual resizing */
+
+  }
 
 .dashboard h2 {
     font-size: 32px;
@@ -72,20 +96,6 @@ h2 {
     color: #333;
 }
 
-/* Button Styles (Optional, if you want to add a button in the future) */
-button {
-    background-color: #008CBA;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #006F8E;
-}
 
 /* Update Button Styles */
 button {
