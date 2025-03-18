@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, url_for, jsonify, redirect
-from main import fetch_weather, fetch_recommendation, fetch_recommendation_data, fetch_info
+from main import fetch_weather, fetch_recommendation, fetch_recommendation_data, fetch_info, fetch_lat_lon_weather
 from flask_cors import CORS
 from flask_wtf import FlaskForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user 
@@ -72,11 +72,6 @@ def register():
 def home():
     return render_template("index.html")
 
-@app.route("/weather", methods=["GET"])
-def weather():
-    data = fetch_weather()
-    return data
-
 @app.route('/info', methods=['GET'])
 def info():
     data = fetch_info()
@@ -87,6 +82,17 @@ def recommendation():
     assistant_message = fetch_recommendation().choices[0].message.content
     # Return the assistant's response as JSON
     return jsonify({"response": assistant_message})
+
+
+@app.route("/weather/", methods=["GET"])
+def weather():
+    lat = request.args.get('lat')
+    lon = request.args.get('lon')
+    if lat and lon:
+        data = fetch_lat_lon_weather(lat,lon)
+        return data 
+    data = fetch_weather()
+    return data
 
 @app.route('/recommendation_data/', methods=['GET'])
 def recommendation_data():

@@ -1,3 +1,4 @@
+
 // Simulating data update for the dashboard
 document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
@@ -9,28 +10,51 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function onLoad() {
-    console.log("Page is Loaded")
-    fetch('http://127.0.0.1:5000/weather')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-        const temp = data.temperature
-        const city = data.city
-        const humidity = data.humidity
-        fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
+// Check if geolocation is supported by the browser
+if (navigator.geolocation) {
+    // Get the user's current position
+    navigator.geolocation.getCurrentPosition(function(position) {
+        // Success callback: the position object contains the latitude and longitude
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        
+        // Log the user's latitude and longitude to the console
+        console.log("Latitude: " + latitude);
+        console.log("Longitude: " + longitude);
+
+        fetch(`http://127.0.0.1:5000/weather?lat=${latitude}&lon=${longitude}`)
         .then(response => response.json())
         .then(data => {
-        // Get the text from the API response
-        const text = data;
-        console.log("This is the data response text" ,data.response)
-        // Get the div container by ID and populate it with the text
-
-        storedData = data.response
+            console.log("The data inside lat lon fetch", data)
+            const temp = data.temperature
+            const city = data.city
+            console.log("City = ", city)
+            const humidity = data.humidity
+            fetch(`http://127.0.0.1:5000/recommendation_data?temperature=${temp}&city=${city}&humidity=${humidity}`)
+            .then(response => response.json())
+            .then(data => {
+            // Get the text from the API response
+            const text = data;
+            console.log("This is the data response text" ,data.response)
+            // Get the div container by ID and populate it with the text
+    
+            storedData = data.response
+            })
         })
-    })
-    .catch(error => {
-        console.error('Error fetching the text:', error);
+        .catch(error => {
+            console.error('Error fetching the text:', error);
+        });
+        
+        // You can now use the latitude and longitude for further operations (e.g., pass them to an API)
+    }, function(error) {
+        // Error callback: handles any error that occurs
+        console.error("Error getting location: ", error);
     });
+    } else {
+        // Geolocation is not supported by the browser
+        console.log("Geolocation is not supported by this browser.");
+    }
+    console.log("Page is Loaded")
 }
 
 async function showWeatherData() {

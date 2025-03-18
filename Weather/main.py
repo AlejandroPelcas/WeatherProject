@@ -122,7 +122,26 @@ def fetch_info():
     else:
         print(f"Error fetching weather data: {response.status_code}")
         return None
-
+    
+def fetch_lat_lon_weather(lat, lon):
+    url= BASE_URL + f"/?lat={lat}&lon={lon}&appid={API_KEY}"
+    params =  {
+        "appid": API_KEY,
+        "units": "metric"  # Use "metric" for Celsius
+    }
+    response = requests.get(url, params=params) # Gives back a resposne Object: Need to turn to json
+    if response.status_code == 200:
+        data = response.json()
+        return {
+            "city": data["name"],
+            "temperature": data["main"]["temp"],
+            "humidity": data["main"]["humidity"],
+            "weather_description": data["weather"][0]["description"],
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+    else:
+        print(f"MAIN.PY Error fetching weather data: {response.status_code}")
+        return None
 #TODO: Rename this to 'fetch_weather_data' and change other method's name
 def fetch_weather():
     params =  {
