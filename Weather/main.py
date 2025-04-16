@@ -40,7 +40,6 @@ def fetch_recommendation_data(temp, humidity, city, weather_description):
     return completion
 
 def fetch_recommendation():
-
     #If data was passed in use it 
     print("Data was passed in fetch rec")
     # temp = data['temperature']
@@ -79,7 +78,7 @@ def fetch_weather_data():
     params =  {
         "q": CITY,
         "appid": API_KEY,
-        "units": "metric"  # Use "imperial" for Fahrenheit
+        "units": "imperial"  # Use "imperial" for Fahrenheit or "metric" for Celsius
     }
     response = requests.get(BASE_URL, params=params) # Gives back a resposne Object: Need to turn to json
     if response.status_code == 200:
@@ -100,7 +99,7 @@ def fetch_info():
     params =  {
         "q": CITY,
         "appid": API_KEY,
-        "units": "metric"  # Use "imperial" for Fahrenheit
+        "units": "imperial"  # Use "imperial" for Fahrenheit "metric" for Celsius
     }
     response = requests.get(BASE_URL, params=params) # Gives back a resposne Object: Need to turn to json
     if response.status_code == 200:
@@ -115,7 +114,7 @@ def fetch_lat_lon_weather(lat, lon):
     url= BASE_URL + f"/?lat={lat}&lon={lon}&appid={API_KEY}"
     params =  {
         "appid": API_KEY,
-        "units": "metric"  # Use "metric" for Celsius
+        "units": "imperial"  # Use "imperial" for Fahrenheit "metric" for Celsius
     }
     response = requests.get(url, params=params) # Gives back a resposne Object: Need to turn to json
     if response.status_code == 200:

@@ -12,6 +12,7 @@ header {
     color: grey;
     text-align: center;
     padding: 20px;
+    border-radius: 20px;      /* Radius of the rounded corners */
 }
 
 h1 {
@@ -68,7 +69,7 @@ textarea {
     border-radius: 4px;
     box-sizing: border-box;
     resize: none; /* Disable manual resizing */
-
+    border-radius: 20px;      /* Radius of the rounded corners */
   }
 
 .dashboard h2 {
